@@ -13,6 +13,7 @@ export default function Login({ clientService, i18nKeyPrefix = "login" }) {
     ...clientService,
   };
 
+  const [popup, setPopup] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const [error, setError] = useState(null);
   const uri_idp_UI = getURIforSignIn();
@@ -34,6 +35,21 @@ export default function Login({ clientService, i18nKeyPrefix = "login" }) {
     setError({
       errorCode: "sign_in_failed",
     });
+  };
+
+  const handleAuthClick = () => {
+    const width = 600, height = 600;
+    const left = 200;
+    const top = 200;
+
+    setPopup(window.open('https://your-auth-endpoint.com', '',
+      `toolbar=no, location=no, directories=no, status=no, menubar=no, 
+    scrollbars=no, resizable=no, copyhistory=no, width=${width}, 
+    height=${height}, top=${top}, left=${left}`));
+  };
+
+  const handleAuthComplete = () => {
+    // Handle OAuth authentication complete
   };
 
   return (
@@ -94,6 +110,9 @@ export default function Login({ clientService, i18nKeyPrefix = "login" }) {
           text={t("sign_in_with")}
           logoPath="esignet_logo.png"
         />
+        <div>
+          <button onClick={handleAuthClick}>Authenticate</button>
+        </div>
         <div className="flex flex-justify mt-5 w-full items-center text-center">
           <p className="w-full text-center">
             {t("dont_have_existing_account")}&nbsp;
